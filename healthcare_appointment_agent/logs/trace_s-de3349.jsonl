@@ -1,0 +1,1 @@
+{"ts": "2026-11-06T03:18:42.875+00:00", "session": "s-de3349", "kind": "info", "text": "session s-de3349 started for patient P1001; 7 MCP tools discovered: ['book_appointment', 'cancel_appointment', 'find_available_slots', 'get_slot', 'list_doctors', 'list_my_appointments', 'reschedule_appointment']"}

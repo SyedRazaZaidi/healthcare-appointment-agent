@@ -1,0 +1,15 @@
+{"ts": "2026-11-04T12:49:16.055+00:00", "session": "demo-174916-1", "kind": "info", "text": "session demo-174916-1 started for patient P1001; 7 MCP tools discovered: ['book_appointment', 'cancel_appointment', 'find_available_slots', 'get_slot', 'list_doctors', 'list_my_appointments', 'reschedule_appointment']"}
+{"ts": "2026-11-04T12:49:16.055+00:00", "session": "demo-174916-1", "kind": "user", "text": "Hi! I'd like to see a dermatologist about a skin problem. Do you have anything next week? I prefer mornings and I can never do Mondays."}
+{"ts": "2026-11-04T12:49:16.664+00:00", "session": "demo-174916-1", "kind": "info", "text": "LLM call failed (attempt 1): NotFoundError: Error code: 404"}
+{"ts": "2026-11-04T12:49:18.062+00:00", "session": "demo-174916-1", "kind": "info", "text": "LLM call failed (attempt 2): NotFoundError: Error code: 404"}
+{"ts": "2026-11-04T12:49:20.478+00:00", "session": "demo-174916-1", "kind": "info", "text": "LLM call failed (attempt 3): NotFoundError: Error code: 404"}
+{"ts": "2026-11-04T12:49:24.810+00:00", "session": "demo-174916-1", "kind": "info", "text": "LLM call failed (attempt 4): NotFoundError: Error code: 404"}
+{"ts": "2026-11-04T12:49:33.315+00:00", "session": "demo-174916-1", "kind": "info", "text": "LLM call failed (attempt 5): NotFoundError: Error code: 404"}
+{"ts": "2026-11-04T12:49:49.813+00:00", "session": "demo-174916-1", "kind": "info", "text": "LLM call failed (attempt 6): NotFoundError: Error code: 404"}
+{"ts": "2026-11-04T12:49:49.813+00:00", "session": "demo-174916-1", "kind": "tool_error", "name": "llm", "error": "NotFoundError: Error code: 404"}
+{"ts": "2026-11-04T12:49:49.813+00:00", "session": "demo-174916-1", "kind": "assistant", "text": "I'm sorry, I'm having technical trouble right now and can't complete that. Please try again in a moment, or call the front desk on 555-0142."}
+{"ts": "2026-11-04T12:49:49.813+00:00", "session": "demo-174916-1", "kind": "user", "text": "Before I decide - what happens if I have to cancel at the last minute?"}
+{"ts": "2026-11-04T12:49:50.376+00:00", "session": "demo-174916-1", "kind": "info", "text": "LLM call failed (attempt 1): NotFoundError: Error code: 404"}
+{"ts": "2026-11-04T12:49:51.708+00:00", "session": "demo-174916-1", "kind": "info", "text": "LLM call failed (attempt 2): NotFoundError: Error code: 404"}
+{"ts": "2026-11-04T12:49:54.076+00:00", "session": "demo-174916-1", "kind": "info", "text": "LLM call failed (attempt 3): NotFoundError: Error code: 404"}
+{"ts": "2026-11-04T12:49:58.441+00:00", "session": "demo-174916-1", "kind": "info", "text": "LLM call failed (attempt 4): NotFoundError: Error code: 404"}

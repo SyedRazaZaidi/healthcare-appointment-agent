@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 770" font-family="Segoe UI, Arial, sans-serif" font-size="13">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#374151"/></marker>
+  </defs>
+  <rect width="1100" height="770" fill="#ffffff"/>
+  <text x="550" y="22" text-anchor="middle" font-size="17" font-weight="700" fill="#111827">CareBridge Healthcare Appointment Assistant - Architecture</text>
+
+  <!-- Patient -->
+  <rect x="20" y="320" width="140" height="90" rx="10" fill="#f3f4f6" stroke="#374151"/>
+  <text x="90" y="355" text-anchor="middle" font-weight="700">Patient</text>
+  <text x="90" y="374" text-anchor="middle">CLI chat</text>
+  <text x="90" y="392" text-anchor="middle" font-size="11">(signed in: P1001)</text>
+  <path d="M160,365 H200" stroke="#374151" stroke-width="1.6" marker-end="url(#a)" marker-start="url(#a)"/>
+
+  <!-- Agent container -->
+  <rect x="200" y="40" width="470" height="715" rx="12" fill="#f8fafc" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="435" y="62" text-anchor="middle" font-weight="700" fill="#1d4ed8" font-size="14">PRIMARY AI AGENT (Python, agent.py)</text>
+
+  <rect x="220" y="75" width="430" height="46" rx="8" fill="#fee2e2" stroke="#b91c1c"/>
+  <text x="435" y="95" text-anchor="middle" font-weight="600">1  Emergency pre-screen (code)</text>
+  <text x="435" y="111" text-anchor="middle" font-size="11.5">possible emergency bypasses the LLM entirely</text>
+
+  <rect x="220" y="135" width="430" height="46" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text x="435" y="155" text-anchor="middle" font-weight="600">2  Short-term memory (REQUIRED)</text>
+  <text x="435" y="171" text-anchor="middle" font-size="11.5">session turns in RAM; resolves "the second one"</text>
+
+  <rect x="220" y="195" width="430" height="62" rx="8" fill="#ede9fe" stroke="#6d28d9"/>
+  <text x="435" y="216" text-anchor="middle" font-weight="600">3  System prompt (REQUIRED prompt engineering)</text>
+  <text x="435" y="233" text-anchor="middle" font-size="11.5">role - scope - tool-selection rules - evidence - memory</text>
+  <text x="435" y="248" text-anchor="middle" font-size="11.5">failure/uncertainty - injected long-term memory block</text>
+
+  <rect x="220" y="271" width="430" height="92" rx="8" fill="#dbeafe" stroke="#1d4ed8"/>
+  <text x="435" y="292" text-anchor="middle" font-weight="600">4  Reasoning loop (max 8 steps, retries)</text>
+  <text x="435" y="311" text-anchor="middle" font-size="11.5">update_plan  →  choose tool  →  observe result</text>
+  <text x="435" y="328" text-anchor="middle" font-size="11.5">failure / change event  →  REPLAN (update_plan is_replan)</text>
+  <text x="435" y="345" text-anchor="middle" font-size="11.5">stops with a safe message on LLM outage or runaway loop</text>
+
+  <rect x="220" y="377" width="430" height="76" rx="8" fill="#fef3c7" stroke="#b45309"/>
+  <text x="435" y="397" text-anchor="middle" font-weight="600">5  Code-level guardrails</text>
+  <text x="435" y="415" text-anchor="middle" font-size="11.5">patient_id injected by agent (model never sees it)</text>
+  <text x="435" y="431" text-anchor="middle" font-size="11.5">HUMAN CONFIRMATION gate for book / cancel / reschedule (fail-closed)</text>
+  <text x="435" y="446" text-anchor="middle" font-size="11.5">instruction-like tool output flagged and fenced as data</text>
+
+  <rect x="220" y="467" width="430" height="46" rx="8" fill="#e0e7ff" stroke="#4338ca"/>
+  <text x="435" y="487" text-anchor="middle" font-weight="600">6  Tool router</text>
+  <text x="435" y="503" text-anchor="middle" font-size="11.5">local tools (RAG, memory, plan)  |  MCP tools (scheduling)</text>
+
+  <rect x="220" y="527" width="430" height="46" rx="8" fill="#f1f5f9" stroke="#64748b"/>
+  <text x="435" y="547" text-anchor="middle" font-weight="600">7  Trace (JSONL) + audit log</text>
+  <text x="435" y="563" text-anchor="middle" font-size="11.5">plans, tool calls, retrieval scores, confirmations, guardrails</text>
+
+  <!-- internal flow arrows -->
+  <path d="M435,121 V135 M435,181 V195 M435,257 V271 M435,363 V377 M435,453 V467" stroke="#374151" stroke-width="1.4" marker-end="url(#a)"/>
+
+  <!-- LLM -->
+  <rect x="740" y="40" width="340" height="86" rx="10" fill="#fce7f3" stroke="#be185d" stroke-width="2"/>
+  <text x="910" y="66" text-anchor="middle" font-weight="700" fill="#9d174d">LLM (REQUIRED)</text>
+  <text x="910" y="86" text-anchor="middle" font-size="12">Claude (Anthropic API) or any OpenAI-compatible</text>
+  <text x="910" y="103" text-anchor="middle" font-size="12">chat model, native tool calling</text>
+  <path d="M650,310 H700 V83 H740" fill="none" stroke="#be185d" stroke-width="1.8" marker-end="url(#a)" marker-start="url(#a)"/>
+  <text x="710" y="200" text-anchor="middle" font-size="11" fill="#9d174d" transform="rotate(-90 710 200)">messages + tools / answer + tool calls</text>
+
+  <!-- router to backends -->
+  <path d="M650,490 H690 V225 H740" fill="none" stroke="#374151" stroke-width="1.6" marker-end="url(#a)"/>
+  <path d="M650,490 H690 V385 H740" fill="none" stroke="#374151" stroke-width="1.6" marker-end="url(#a)"/>
+  <path d="M650,490 H740" fill="none" stroke="#374151" stroke-width="1.6" marker-end="url(#a)"/>
+
+  <!-- RAG -->
+  <rect x="740" y="145" width="340" height="165" rx="10" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/>
+  <text x="910" y="167" text-anchor="middle" font-weight="700" fill="#075985">RAG (REQUIRED)</text>
+  <text x="910" y="188" text-anchor="middle" font-size="12">search_clinic_knowledge (local tool)</text>
+  <rect x="755" y="198" width="310" height="30" rx="6" fill="#fff" stroke="#0369a1"/>
+  <text x="910" y="218" text-anchor="middle" font-size="12">chunk (section-aware) → embed (MiniLM)</text>
+  <rect x="755" y="236" width="310" height="30" rx="6" fill="#fff" stroke="#0369a1"/>
+  <text x="910" y="256" text-anchor="middle" font-size="12">ChromaDB vector store (persistent)</text>
+  <text x="910" y="288" text-anchor="middle" font-size="11.5">10 clinic documents · top-k · score threshold</text>
+  <text x="910" y="303" text-anchor="middle" font-size="11.5">below threshold = "no evidence"</text>
+
+  <!-- Long-term memory -->
+  <rect x="740" y="325" width="340" height="120" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+  <text x="910" y="347" text-anchor="middle" font-weight="700" fill="#166534">Long-term memory (REQUIRED)</text>
+  <text x="910" y="367" text-anchor="middle" font-size="12">remember / forget (local tools)</text>
+  <rect x="755" y="377" width="310" height="30" rx="6" fill="#fff" stroke="#15803d"/>
+  <text x="910" y="397" text-anchor="middle" font-size="12">SQLite agent_memory.db</text>
+  <text x="910" y="428" text-anchor="middle" font-size="11.5">facts · session summaries · audit log (non-clinical only)</text>
+
+  <!-- MCP -->
+  <rect x="740" y="462" width="340" height="288" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+  <text x="910" y="484" text-anchor="middle" font-weight="700" fill="#9a3412">MCP (REQUIRED)</text>
+  <rect x="755" y="494" width="310" height="36" rx="6" fill="#fff" stroke="#c2410c"/>
+  <text x="910" y="517" text-anchor="middle" font-size="12">MCP client (official Python SDK)</text>
+  <path d="M910,530 V556" stroke="#c2410c" stroke-width="1.8" marker-end="url(#a)" marker-start="url(#a)"/>
+  <text x="918" y="548" font-size="11" fill="#9a3412">JSON-RPC over stdio: tools/list, tools/call</text>
+  <rect x="755" y="556" width="310" height="56" rx="6" fill="#fff" stroke="#c2410c"/>
+  <text x="910" y="577" text-anchor="middle" font-size="12" font-weight="600">MCP server (FastMCP subprocess)</text>
+  <text x="910" y="596" text-anchor="middle" font-size="11.5">list_doctors · find_available_slots · get_slot ·</text>
+  <text x="910" y="608" text-anchor="middle" font-size="11.5">list_my_appointments · book · cancel · reschedule</text>
+  <path d="M910,612 V632" stroke="#c2410c" stroke-width="1.6" marker-end="url(#a)"/>
+  <rect x="755" y="632" width="310" height="34" rx="6" fill="#fff" stroke="#c2410c"/>
+  <text x="910" y="654" text-anchor="middle" font-size="12">ClinicService (clinic rules, atomic writes)</text>
+  <path d="M910,666 V684" stroke="#c2410c" stroke-width="1.6" marker-end="url(#a)"/>
+  <rect x="755" y="684" width="310" height="34" rx="6" fill="#fff" stroke="#c2410c"/>
+  <text x="910" y="706" text-anchor="middle" font-size="12">clinic.db (SQLite, synthetic data)</text>
+  <text x="910" y="738" text-anchor="middle" font-size="11" fill="#9a3412">change events injected here: slot taken · doctor leave</text>
+
+  <!-- legend -->
+  <text x="20" y="560" font-weight="700" font-size="12">Legend</text>
+  <text x="20" y="580" font-size="11.5">Boxes marked REQUIRED map 1:1</text>
+  <text x="20" y="596" font-size="11.5">to the assignment's mandatory</text>
+  <text x="20" y="612" font-size="11.5">components. Local tools run in</text>
+  <text x="20" y="628" font-size="11.5">the agent process; MCP tools run</text>
+  <text x="20" y="644" font-size="11.5">in a separate server process.</text>
+</svg>

@@ -1,0 +1,15 @@
+# Core
+anthropic>=0.50        # LLM_PROVIDER=anthropic (default)
+mcp>=1.9,<2            # official Model Context Protocol Python SDK (client + FastMCP server)
+chromadb>=0.5          # vector database (also provides the ONNX MiniLM embedder)
+numpy>=1.26
+starlette>=0.40      # web UI server (already installed as a dependency of mcp)
+uvicorn>=0.30        # ASGI server for the web UI
+websockets>=12       # WebSocket transport used by uvicorn
+python-dotenv>=1.0
+
+# Only if you set LLM_PROVIDER=openai (OpenAI, Gemini, Groq, Ollama, OpenRouter ... via OPENAI_BASE_URL)
+openai>=1.50
+
+# Optional alternative embedder: EMBEDDING_BACKEND=sentence-transformers
+# sentence-transformers>=3.0

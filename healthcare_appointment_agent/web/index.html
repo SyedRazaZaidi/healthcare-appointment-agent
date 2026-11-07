@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CareBridge · Healthcare Appointment Assistant</title>
+  <meta name="theme-color" content="#070b17">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%232dd4bf'/%3E%3Cstop offset='1' stop-color='%23818cf8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M32 47s-14-8.4-14-18.2A7.8 7.8 0 0 1 32 24a7.8 7.8 0 0 1 14 4.8C46 38.6 32 47 32 47z' fill='white'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"><i></i></div>
+  <div class="gridfx" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <div class="app view-chat" id="app">
+
+    <!-- ───────────── Sidebar ───────────── -->
+    <aside class="sidebar glass" id="sidebar">
+      <div class="brand">
+        <div class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-8-4.8-8-10.4A4.5 4.5 0 0 1 12 8a4.5 4.5 0 0 1 8 2.6C20 16.2 12 21 12 21z"/></svg></div>
+        <div>
+          <div class="brand-name">CareBridge</div>
+          <div class="brand-sub">AI Appointment Assistant</div>
+        </div>
+        <button class="icon-btn only-compact" id="close-sidebar" aria-label="Close menu"></button>
+      </div>
+
+      <section class="block">
+        <div class="block-title">Signed in as</div>
+        <div class="patient-card" id="patient-card">
+          <div class="avatar" id="patient-avatar">–</div>
+          <div class="patient-meta">
+            <div class="patient-name" id="patient-name">Connecting…</div>
+            <div class="patient-id" id="patient-id">&nbsp;</div>
+          </div>
+        </div>
+        <div class="patient-switch" id="patient-switch" role="tablist" aria-label="Switch patient"></div>
+      </section>
+
+      <section class="block">
+        <div class="block-title">System status</div>
+        <ul class="status-list">
+          <li><span class="dot" id="dot-conn"></span><span class="k">Connection</span><span class="v" id="st-conn">offline</span></li>
+          <li><span class="k">LLM</span><span class="v mono" id="st-llm">–</span></li>
+          <li><span class="k">MCP</span><span class="v" id="st-mcp">–</span></li>
+          <li><span class="k">RAG</span><span class="v" id="st-rag">–</span></li>
+          <li><span class="k">Clinic time</span><span class="v mono" id="st-time">–</span></li>
+        </ul>
+      </section>
+
+      <section class="block sim">
+        <div class="block-title">Simulation <span class="pill warn">change events</span></div>
+        <p class="hint">Disrupt the clinic and watch the agent replan.</p>
+        <button class="btn sim-btn" data-sim="race"><span class="ic-wrap" data-icon="zap"></span><span><b>Slot gets taken</b><small>next booking loses a race</small></span></button>
+        <button class="btn sim-btn" data-sim="doctor_leave"><span class="ic-wrap" data-icon="alert"></span><span><b>Doctor goes on leave</b><small>clinic cancels your latest booking</small></span></button>
+        <button class="btn sim-btn subtle" data-sim="reset"><span class="ic-wrap" data-icon="refresh"></span><span><b>Reset demo world</b><small>reseed schedule, clear memory</small></span></button>
+      </section>
+
+      <div class="sidebar-foot">
+        <button class="btn ghost" id="new-session"><span data-icon="plus"></span> New session</button>
+        <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme"></button>
+      </div>
+      <div class="fineprint">Synthetic data · University project<br>Human confirmation required for every booking change</div>
+    </aside>
+
+    <!-- ───────────── Chat ───────────── -->
+    <main class="chat glass">
+      <header class="chat-head">
+        <button class="icon-btn only-compact" id="open-sidebar" aria-label="Open menu"></button>
+        <div class="chat-title">
+          <div class="chat-h1">Chat with CareBridge</div>
+          <div class="chat-sub"><span id="session-chip" class="mono">no session</span></div>
+        </div>
+        <div class="live-pill" id="live-pill"><span class="orb"></span><span id="live-text">Idle</span></div>
+      </header>
+
+      <div class="messages" id="messages">
+        <section class="hero" id="hero">
+          <div class="hero-badge">✦ Agentic AI · RAG · MCP · Memory</div>
+          <h1>Your care, <span class="grad-text">scheduled intelligently.</span></h1>
+          <p>Book, move or cancel appointments, ask about clinic policies, and let the assistant remember how you like things — with a human in control of every change.</p>
+          <div class="hero-grid" id="hero-grid"></div>
+        </section>
+      </div>
+
+      <div class="quick" id="quick"></div>
+      <form class="composer" id="composer" autocomplete="off">
+        <textarea id="input" rows="1" placeholder="Ask about appointments, policies, or your preferences…" aria-label="Message"></textarea>
+        <button class="send" id="send" type="submit" aria-label="Send"></button>
+      </form>
+    </main>
+
+    <!-- ───────────── Inspector ───────────── -->
+    <aside class="inspector glass">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="mind" role="tab"><span data-icon="activity"></span>Agent mind</button>
+        <button class="tab" data-tab="appts" role="tab"><span data-icon="calendar"></span>Appointments<em class="badge" id="badge-appts">0</em></button>
+        <button class="tab" data-tab="memory" role="tab"><span data-icon="layers"></span>Memory<em class="badge" id="badge-memory">0</em></button>
+        <button class="tab" data-tab="kb" role="tab"><span data-icon="book"></span>Knowledge</button>
+      </div>
+
+      <section class="panel active" id="panel-mind">
+        <div class="stats" id="stats">
+          <div class="stat"><b id="stat-plans">0</b><span>plans</span></div>
+          <div class="stat"><b id="stat-tools">0</b><span>tool calls</span></div>
+          <div class="stat amber"><b id="stat-replans">0</b><span>replans</span></div>
+          <div class="stat red"><b id="stat-guards">0</b><span>guardrails</span></div>
+        </div>
+        <div class="timeline" id="timeline">
+          <div class="empty" id="mind-empty">
+            <div class="empty-art" data-icon="activity"></div>
+            <b>The agent's reasoning appears here</b>
+            <span>Plans, tool calls, retrieved evidence, memory writes and guardrails stream in live as it works.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-appts"><div class="list" id="appts-list"></div></section>
+
+      <section class="panel" id="panel-memory">
+        <div class="subhead">Long-term memory <small>persists across sessions</small></div>
+        <div class="chips" id="facts"></div>
+        <div class="subhead">Earlier sessions</div>
+        <div class="list" id="summaries"></div>
+        <div class="subhead">Audit log <small>every consequential action</small></div>
+        <div class="list" id="audit"></div>
+      </section>
+
+      <section class="panel" id="panel-kb">
+        <div class="search">
+          <span data-icon="search"></span>
+          <input id="kb-q" placeholder="Search the clinic knowledge base…" aria-label="Search knowledge base">
+        </div>
+        <div class="hint" id="kb-hint">Try “late cancellation fee”, “telehealth”, or something unrelated like “pizza recipe” to see the evidence cut-off.</div>
+        <div class="list" id="kb-results"></div>
+        <div class="subhead">Documents <small id="kb-count"></small></div>
+        <div class="list" id="kb-docs"></div>
+      </section>
+    </aside>
+  </div>
+
+  <nav class="mobile-tabs" id="mobile-tabs">
+    <button data-view="chat" class="active"><span data-icon="chat"></span>Chat</button>
+    <button data-view="mind"><span data-icon="activity"></span>Inspector</button>
+  </nav>
+
+  <!-- Human-in-the-loop confirmation -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <div class="modal-card">
+      <div class="modal-icon" data-icon="shield"></div>
+      <div class="modal-kicker">Human confirmation required</div>
+      <h2 id="modal-title">Confirm this change</h2>
+      <div class="modal-action" id="modal-action"></div>
+      <div class="modal-detail" id="modal-detail"></div>
+      <div class="modal-note">The assistant cannot change your schedule until you approve. Closing this dialog declines.</div>
+      <div class="countdown"><i id="countdown-bar"></i></div>
+      <div class="modal-buttons">
+        <button class="btn ghost" id="decline">Decline</button>
+        <button class="btn primary" id="approve">Approve</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

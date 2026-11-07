@@ -1,0 +1,1 @@
+all-MiniLM-L6-v2 (ONNX via chromadb)
